@@ -23,12 +23,10 @@ pipeline{
             }
         }
 
-        // Stage3 : Publish the source code to Sonarqube
-        stage ('Sonarqube Analysis'){
+        // Stage3 : Publish the source code to Nexus
+        stage ('Publish to Nexus'){
             steps {
-                echo ' Source code published to Sonarqube for SCA......'
-                withSonarQubeEnv('sonarqube'){ // You can override the credential to be used
-                     sh 'mvn sonar:sonar'
+                nexusArtifactUploader artifacts: [[artifactId: 'VinayDevOpsLab', classifier: '', file: 'target/VinayDevOpsLab-0.0.4.war', type: 'war']], credentialsId: 'fceb77d5-0faa-400b-8921-750f84f130f9', groupId: 'com.vinaysdevopslab', nexusUrl: '172.20.10.50:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'VinayDevops-SNAPSHOT', version: '0.0.4'
                 }
 
             }
